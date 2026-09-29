@@ -9,8 +9,6 @@ import java.net.Socket;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        boolean conversazioneInfinita = true;
-        
         System.out.println("[Server] Server online");
 
         ServerSocket ss = new ServerSocket(3000);
@@ -22,12 +20,16 @@ public class Main {
         
         do{
             String word = in.readLine();
-            System.out.println("[Client] Parola ricevuta: \"" + word + "\"");
-
-            System.out.println("[Server] Trasmissione parola uppercase...");
-            out.println(word.toUpperCase());
-        }while(conversazioneInfinita);
-
-        sock.close();
+            if(word.equals("--exit")){
+                System.out.println("[Server] Ricevuto --exit. Termino la connessione...");
+                out.println("--confirmexit");
+                sock.close();
+                break;
+            }else{
+                System.out.println("[Client] Parola ricevuta: \"" + word + "\"");
+                System.out.println("[Server] Trasmissione parola uppercase...");
+                out.println(word.toUpperCase());
+            }
+        }while(true);
     }
 }
